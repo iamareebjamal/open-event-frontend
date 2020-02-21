@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { merge, values, isEmpty } from 'lodash-es';
 
 export default Route.extend(ApplicationRouteMixin, {
+  cache       : service(),
   session     : service(),
   currentUser : service(),
 
@@ -53,23 +54,29 @@ export default Route.extend(ApplicationRouteMixin, {
       sort: 'index'
     });
 
-    const settingsPromise = this.store.queryRecord('setting', {});
     const eventTypesPromise = this.store.findAll('event-type');
     const eventLocationsPromise = this.store.findAll('event-location');
 
-    const [notifications, pages, settings, eventTypes, eventLocations] = await Promise.all([
+    console.log(this.loader, this.settings)
+
+    // const settingsPromise = this.cache.fetchItem('settings', () => this.store.queryRecord('setting', {}));
+    // const eventTypesPromise = this.cache.fetchItem('event_types', () => this.store.findAll('event-type'));
+    // const eventLocationsPromise = this.cache.fetchItem('event_locations', () => this.store.findAll('event-location'));
+
+    const [notifications, pages, eventTypes, eventLocations] = await Promise.all([
       notificationsPromise,
       pagesPromise,
-      settingsPromise,
       eventTypesPromise,
       eventLocationsPromise]);
+    
+    console.log(notifications, pages, eventTypes, eventLocations);
 
     return {
       notifications,
       pages,
-      cookiePolicy     : settings.cookiePolicy,
-      cookiePolicyLink : settings.cookiePolicyLink,
-      socialLinks      : settings,
+      cookiePolicy     : this.settings.cookiePolicy,
+      cookiePolicyLink : this.settings.cookiePolicyLink,
+      socialLinks      : this.settings,
       eventTypes,
       eventLocations
     };
