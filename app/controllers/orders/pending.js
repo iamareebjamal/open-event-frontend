@@ -9,23 +9,23 @@ export default Controller.extend({
   paymentDescription: 'Please fill your card details to proceed',
 
   isStripe: computed('model.order.paymentMode', function() {
-    return this.get('model.order.paymentMode') === 'stripe';
+    return this.model.order.paymentMode === 'stripe';
   }),
 
   isPaypal: computed('model.order.paymentMode', function() {
-    return this.get('model.order.paymentMode') === 'paypal';
+    return this.model.order.paymentMode === 'paypal';
   }),
 
   isPaytm: computed('model.order.paymentMode', function() {
-    return this.get('model.order.paymentMode') === 'paytm';
+    return this.model.order.paymentMode === 'paytm';
   }),
 
   isOmise: computed('model.order.paymentMode', function() {
-    return this.get('model.order.paymentMode') === 'omise';
+    return this.model.order.paymentMode === 'omise';
   }),
 
   isAliPay: computed('model.order', function() {
-    return this.get('model.order.paymentMode') === 'alipay';
+    return this.model.order.paymentMode === 'alipay';
   }),
 
   paymentAmount: computed('model.order', function() {

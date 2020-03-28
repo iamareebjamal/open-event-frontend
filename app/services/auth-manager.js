@@ -16,7 +16,7 @@ export default Service.extend({
     }
 
     if (this.get('session.data.currentUserFallback')) {
-      let userModel = this.store.peekRecord('user', this.get('session.data.currentUserFallback.id'));
+      let userModel = this.store.peekRecord('user', this.session.data.currentUserFallback.id);
       if (!userModel) {
         return this.restoreCurrentUser();
       }
@@ -28,13 +28,13 @@ export default Service.extend({
   }),
 
   userAuthenticatedStatusChange: observer('session.isAuthenticated', function() {
-    if (!this.get('session.isAuthenticated')) {
+    if (!this.session.isAuthenticated) {
       this.identifyStranger();
     }
   }),
 
   currentUserChangeListener: observer('currentUser', function() {
-    if (this.currentUser && this.get('session.isAuthenticated')) {
+    if (this.currentUser && this.session.isAuthenticated) {
       this.identify();
     }
   }),
@@ -124,10 +124,10 @@ export default Service.extend({
   },
 
   async initialize() {
-    if (this.get('session.isAuthenticated')) {
-      if (this.get('session.data.currentUserFallback.id')) {
+    if (this.session.isAuthenticated) {
+      if (this.session.data.currentUserFallback.id) {
         try {
-          const user = await this.store.findRecord('user', this.get('session.data.currentUserFallback.id'));
+          const user = await this.store.findRecord('user', this.session.data.currentUserFallback.id);
           this.set('currentUserModel', user);
           this.identify();
         } catch (e) {

@@ -533,8 +533,8 @@ export default Component.extend(FormMixin, {
     }
   },
   didInsertElement() {
-    if (this.isSpeaker && this.get('data.speaker') && this.get('data.speaker').length) {
-      this.set('data.speaker', this.get('data.speaker').toArray()[0]);
+    if (this.isSpeaker && this.data.speaker && this.data.speaker.length) {
+      this.set('data.speaker', this.data.speaker.toArray()[0]);
     }
 
     if (this.isSession && this.get('data.session') && this.get('data.session').length) {

@@ -100,7 +100,7 @@ export default Controller.extend({
     },
 
     async placeOrder() {
-      if (!this.get('session.isAuthenticated')) {
+      if (!this.session.isAuthenticated) {
         this.set('isLoginModalOpen', true);
         return;
       }

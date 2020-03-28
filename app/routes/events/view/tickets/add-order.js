@@ -15,7 +15,7 @@ export default Route.extend({
 
       order: await this.store.createRecord('order', {
         event     : eventDetails,
-        user      : this.get('authManager.currentUser'),
+        user      : this.authManager.currentUser,
         tickets   : [],
         attendees : []
       }),

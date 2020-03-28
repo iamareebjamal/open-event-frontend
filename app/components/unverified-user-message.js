@@ -7,7 +7,7 @@ export default Component.extend({
   isMailSent       : false,
 
   shouldShowMessage: computed('session.isAuthenticated', 'authManager.currentUser.isVerified', 'isMessageVisible', function() {
-    return this.get('session.isAuthenticated')
+    return this.session.isAuthenticated
           && this.isMessageVisible
           && !this.get('authManager.currentUser.isVerified');
   }),

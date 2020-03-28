@@ -45,7 +45,7 @@ export default Route.extend({
       tax      : await eventDetails.get('tax'),
       order    : this.store.createRecord('order', {
         event   : eventDetails,
-        user    : this.get('authManager.currentUser'),
+        user    : this.authManager.currentUser,
         tickets : []
       }),
 

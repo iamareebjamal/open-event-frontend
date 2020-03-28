@@ -11,7 +11,7 @@ export default Route.extend({
       accessCode: this.store.createRecord('access-code', {
         event         : this.modelFor('events.view'),
         tickets       : [],
-        marketer      : this.get('authManager.currentUser'),
+        marketer      : this.authManager.currentUser,
         validFromDate : moment(),
         validFromTime : '12:00',
         validTillDate : moment().add(7, 'days'),

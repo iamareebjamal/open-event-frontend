@@ -7,7 +7,7 @@ export default Route.extend({
 
   async model() {
     const eventDetails = this.modelFor('public');
-    const currentUser = this.get('authManager.currentUser');
+    const currentUser = this.authManager.currentUser;
     let userName;
     if (currentUser.firstName || currentUser.lastName) {
       userName = `${currentUser.firstName} ${currentUser.lastName}`;

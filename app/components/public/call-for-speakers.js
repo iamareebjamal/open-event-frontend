@@ -4,7 +4,7 @@ import { computed } from '@ember/object';
 export default Component.extend({
   actions: {
     openModal() {
-      if (this.get('session.isAuthenticated')) {
+      if (this.session.isAuthenticated) {
         this.set('isCfsModalOpen', true);
       } else {
         this.set('isLoginModalOpen', true);

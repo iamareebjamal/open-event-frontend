@@ -7,7 +7,7 @@ export default Component.extend({
   item       : null,
 
   currentRoute: computed('session.currentRouteName', 'item', function() {
-    const path = this.get('session.currentRouteName');
+    const path = this.session.currentRouteName;
     if (path) {
       return this.item;
     }

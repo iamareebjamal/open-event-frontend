@@ -11,7 +11,7 @@ export default Component.extend(FormMixin, {
   promotionalCodeApplied: false,
 
   isUnverified: computed('session.isAuthenticated', 'authManager.currentUser.isVerified', function() {
-    return this.get('session.isAuthenticated')
+    return this.session.isAuthenticated
       && !this.get('authManager.currentUser.isVerified');
   }),
 
