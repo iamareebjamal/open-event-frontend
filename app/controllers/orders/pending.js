@@ -29,15 +29,15 @@ export default Controller.extend({
   }),
 
   paymentAmount: computed('model.order', function() {
-    return this.get('model.order.amount') * 100;
+    return this.model.order.amount * 100;
   }),
 
   publicKeyOmise: computed('settings.omiseLivePublic', 'settings.omiseLivePublic', function() {
-    return this.get('settings.omiseLivePublic') || this.get('settings.omiseTestPublic');
+    return this.settings.omiseLivePublic || this.settings.omiseTestPublic;
   }),
 
   omiseFormAction: computed('model.order.identifier', function() {
-    let identifier = this.get('model.order.identifier');
+    let { identifier } = this.model.order;
     return `${ENV.APP.apiHost}/v1/orders/${identifier}/omise-checkout`;
   }),
 
@@ -104,7 +104,7 @@ export default Controller.extend({
     processStripeToken(token) {
       // Send this token to server to process payment
       this.set('isLoading', true);
-      let order = this.get('model.order');
+      let { order } = this.model;
       let chargePayload = {
         'data': {
           'attributes': {

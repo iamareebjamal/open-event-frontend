@@ -59,7 +59,7 @@ export default Route.extend({
   },
   resetController(controller) {
     this._super(...arguments);
-    const model = controller.get('model.order');
+    const model = controller.model.order;
     if (!model.id) {
       model.unloadRecord();
     }

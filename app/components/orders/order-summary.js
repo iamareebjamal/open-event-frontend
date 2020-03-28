@@ -15,7 +15,7 @@ export default Component.extend(FormMixin, {
   }),
 
   async didInsertElement() {
-    let discountCode = await this.get('data.discountCode');
+    let discountCode = await this.data.discountCode;
     let tickets = await this.data.tickets;
     tickets.forEach(ticket => {
       ticket.set('discount', 0);

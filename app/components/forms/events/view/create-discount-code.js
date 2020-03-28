@@ -6,10 +6,10 @@ import { currencySymbol } from 'open-event-frontend/helpers/currency-symbol';
 export default Component.extend(FormMixin, {
   getValidationRules() {
     window.$.fn.form.settings.rules.checkMaxMin = () => {
-      return this.get('data.minQuantity') <= this.get('data.maxQuantity');
+      return this.data.minQuantity <= this.data.maxQuantity;
     };
     window.$.fn.form.settings.rules.checkMaxTotal = () => {
-      return this.get('data.maxQuantity') <= this.get('data.ticketsNumber');
+      return this.data.maxQuantity <= this.data.ticketsNumber;
     };
     window.$.fn.form.settings.rules.checkTicketSelected = () => {
       let tickets = this.eventTickets;
@@ -113,9 +113,9 @@ export default Component.extend(FormMixin, {
     };
   },
   discountLink: computed('data.code', function() {
-    const params = this.get('router._router.currentState.routerJsState.params');
-    const origin = this.fastboot.isFastBoot ? `${this.get('fastboot.request.protocol')}//${this.get('fastboot.request.host')}` : location.origin;
-    let link = origin + this.router.urlFor('public', params['events.view'].event_id, { queryParams: { code: this.get('data.code') } });
+    const { params } = this.router._router.currentState.routerJsState;
+    const origin = this.fastboot.isFastBoot ? `${this.fastboot.request.protocol}//${this.fastboot.request.host}` : location.origin;
+    let link = origin + this.router.urlFor('public', params['events.view'].event_id, { queryParams: { code: this.data.code } });
     this.set('data.discountUrl', link);
     return link;
   }),

@@ -39,7 +39,7 @@ export default Controller.extend({
 
   actions: {
     updateOrder(ticket, count) {
-      let order = this.get('model.order');
+      let { order } = this.model;
       ticket.set('orderQuantity', count);
       order.set('amount', this.total);
       if (!this.total) {
@@ -55,12 +55,12 @@ export default Controller.extend({
     },
     async placeOrder() {
       this.set('isLoading', true);
-      let order = this.get('model.order');
+      let { order } = this.model;
       let event = order.get('event');
       order.tickets.forEach(ticket => {
         let numberOfAttendees = ticket.orderQuantity;
         while (numberOfAttendees--) {
-          this.get('model.attendees').addObject(this.store.createRecord('attendee', {
+          this.model.attendees.addObject(this.store.createRecord('attendee', {
             firstname : 'John',
             lastname  : 'Doe',
             email     : 'johndoe@example.com',
@@ -70,8 +70,8 @@ export default Controller.extend({
         }
       });
       try {
-        let order = this.get('model.order');
-        let attendees = this.get('model.attendees');
+        let { order } = this.model;
+        let { attendees } = this.model;
         await Promise.all((attendees ? attendees.toArray() : []).map(attendee => attendee.save()));
         order.set('attendees', attendees.slice());
         await order.save()

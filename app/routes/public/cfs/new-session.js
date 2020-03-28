@@ -34,9 +34,9 @@ export default Route.extend({
   },
   resetController(controller) {
     this._super(...arguments);
-    const model = controller.get('model.session');
+    const model = controller.model.session;
     if (!model.id) {
-      controller.get('model.session').unloadRecord();
+      controller.model.session.unloadRecord();
     }
   }
 });

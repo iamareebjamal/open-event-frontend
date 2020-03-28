@@ -12,7 +12,7 @@ export default Route.extend(ApplicationRouteMixin, {
       tokens = [];
     }
 
-    tokens.reverse().push(this.get('settings.appName'));
+    tokens.reverse().push(this.settings.appName);
     return tokens.join(' | ');
   },
 
@@ -76,7 +76,7 @@ export default Route.extend(ApplicationRouteMixin, {
   },
 
   sessionInvalidated() {
-    if (!this.get('session.skipRedirectOnInvalidation')) {
+    if (!this.session.skipRedirectOnInvalidation) {
       this._super(...arguments);
     }
 

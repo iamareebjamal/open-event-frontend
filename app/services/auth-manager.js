@@ -15,7 +15,7 @@ export default Service.extend({
       return this.currentUserModel;
     }
 
-    if (this.get('session.data.currentUserFallback')) {
+    if (this.session.data.currentUserFallback) {
       let userModel = this.store.peekRecord('user', this.session.data.currentUserFallback.id);
       if (!userModel) {
         return this.restoreCurrentUser();
@@ -40,7 +40,7 @@ export default Service.extend({
   }),
 
   getTokenPayload() {
-    const token = this.get('session.session.content.authenticated.access_token');
+    const token = this.session.session.content.authenticated.access_token;
     if (token && token !== '') {
       return JSON.parse(atob(token.split('.')[1]));
     }

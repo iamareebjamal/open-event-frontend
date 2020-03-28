@@ -9,14 +9,14 @@ export default Component.extend({
   shouldShowMessage: computed('session.isAuthenticated', 'authManager.currentUser.isVerified', 'isMessageVisible', function() {
     return this.session.isAuthenticated
           && this.isMessageVisible
-          && !this.get('authManager.currentUser.isVerified');
+          && !this.authManager.currentUser.isVerified;
   }),
 
   actions: {
     sendConfirmationMail() {
       let payload = {
         'data': {
-          'email': this.get('authManager.currentUser.email')
+          'email': this.authManager.currentUser.email
         }
       };
       this.loader

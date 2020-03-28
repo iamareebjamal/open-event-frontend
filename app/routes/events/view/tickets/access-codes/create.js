@@ -24,7 +24,7 @@ export default Route.extend({
   },
   resetController(controller) {
     this._super(...arguments);
-    const model = controller.get('model.accessCode');
+    const model = controller.model.accessCode;
     if (!model.id) {
       model.unloadRecord();
     }
