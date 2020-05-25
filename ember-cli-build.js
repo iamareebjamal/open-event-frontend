@@ -53,6 +53,11 @@ module.exports = function(defaults) {
     },
     autoImport: {
       webpack: {
+        resolve: {
+          alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+          }
+        },
         externals : { jquery: 'jQuery' },
         plugins   : process.env.ANALYE_BUNDLE === 'true' ? [
           new BundleAnalyzerPlugin({
