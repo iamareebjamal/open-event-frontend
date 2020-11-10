@@ -1,7 +1,5 @@
 /* eslint-env node */
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const MergeTrees = require('broccoli-merge-trees');
-const Funnel = require('broccoli-funnel');
 const targets = require('./config/targets');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -96,12 +94,6 @@ module.exports = function(defaults) {
     using: [{ transformation: 'fastbootShim' }]
   });
 
-  const appTree = app.toTree([]);
-  return new MergeTrees([appTree, new Funnel(appTree, {
-    files: ['index.html'],
-
-    getDestinationPath() {
-      return '404.html';
-    }
-  })]);
+  const { Webpack } = require('@embroider/webpack');
+  return require('@embroider/compat').compatBuild(app, Webpack);
 };
