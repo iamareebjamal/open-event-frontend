@@ -3,12 +3,14 @@ import Service, { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
 function pushToStore(store: DS.Store, data: any): any[] | any {
+  console.log(data)
   const parsed = data?.value;
   if (Array.isArray(parsed)) {
-    const items = []
+    const items: any[] = []
     for (const item of parsed) {
+      console.log(item, item.data.id)
       store.pushPayload(item);
-      items.push(store.peekRecord(item.data.type, item.data.id));
+      // items.push(store.peekRecord(item.data.type, item.data.id));
     }
     return items;
   } else {
@@ -22,7 +24,13 @@ function saveToStorage(key: string, value: any | null) {
   if (!value) {return}
   let serialized = null;
   if (Array.isArray(value.content)) {
-    serialized = value.map((v: any) => v.serialize({ includeId: true }));
+    serialized = value.map((v: any, index: number) => {
+      const item = v.serialize({ includeId: true });
+      console.log(item, v, value.content[index])
+      item.data.id = item.data.id ?? value.content[index].id
+      return item;
+    });
+    console.log('>>>>>>>>>>>>', serialized, value.content)
   } else {
     serialized = value.serialize({ includeId: true });
   }
@@ -62,22 +70,25 @@ export default class Cache extends Service.extend({
     try {
       if (stored) {
         const data = JSON.parse(stored);
+        console.log(key, data)
 
-        if (!data.time) {
-          // Invalid data structure
-          return this.passThrough(key, callable);
-        }
+        // if (!data.time) {
+        //   // Invalid data structure
+        //   return this.passThrough(key, callable);
+        // }
 
-        const expired = this.isExpired(data);
-        const item = pushToStore(this.store, data);
+        pushToStore(this.store, data);
+        // const expired = this.isExpired(data);
+        // const item = pushToStore(this.store, data);
 
-        if (expired) {
-          // Revalidate resource while serving stale
-          console.info('Item expired. Revalidating...', key);
-          this.passThrough(key, callable);
-        }
+        // if (expired) {
+        //   // Revalidate resource while serving stale
+        //   console.info('Item expired. Revalidating...', key);
+        //   this.passThrough(key, callable);
+        // }
 
-        return item;
+        // return item;
+        return callable()
       } else {
         return this.passThrough(key, callable);
       }
@@ -98,6 +109,10 @@ export default class Cache extends Service.extend({
     const saved = await this.cacheData(key, () => this.store.queryRecord(model, options));
     if (saved) {return saved;}
     return this.store.peekRecord(model, 1);
+  }
+
+  async query(key: string, model: string, options: any | null): Promise<any> {
+    return await this.cacheData(key, () => this.store.query(model, options));
   }
 
   clear(): void {

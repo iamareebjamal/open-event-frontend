@@ -3,9 +3,12 @@ import { action } from '@ember/object';
 import Route from '@ember/routing/route';
 import moment from 'moment';
 import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
 
 @classic
 export default class IndexRoute extends Route {
+  @service cache;
+
   /**
    * Load filtered events based on the given params
    *
@@ -228,16 +231,16 @@ export default class IndexRoute extends Route {
     ];
 
     return hash({
-      filteredEvents: this.store.query('event', {
+      filteredEvents: this.cache.query('filtered-events', 'event', {
         upcoming : true,
         include  : 'event-topic,event-sub-topic,event-type,speakers-call'
       }),
-      featuredEvents: this.store.query('event', {
+      featuredEvents: this.cache.query('featured-events', 'event', {
         sort    : 'starts-at',
         include : 'event-topic,event-sub-topic,event-type,speakers-call',
         filter  : filterOptions
       }),
-      callForSpeakersEvents: this.store.query('event', {
+      callForSpeakersEvents: this.cache.query('cfs-events', 'event', {
         sort         : 'starts-at',
         include      : 'event-topic,event-sub-topic,event-type,speakers-call',
         filter       : callForSpeakersFilter,
